@@ -36,24 +36,22 @@ fun main(args: Array<String>) {
 
     val tokenizer = SudachiTokenizerFactory(dictionary, SplitMode.B) { morpheme ->
         // 未知語を無視する
-        //if (morpheme.isOOV) return@SudachiTokenizerFactory null
+        if (morpheme.isOOV) return@SudachiTokenizerFactory null
 
         // 品詞: 名詞,動詞,形容詞,副詞,形状詞,接尾辞,記号,感動詞,助動詞,補助記号,代名詞,接頭辞,助詞,連体詞,接続詞
         val pos = morpheme.partOfSpeech()
         when (pos[0]) {
-            "名詞" -> {
-                when {
-                    pos[1] == "普通名詞" -> when {
-                        pos[2] == "副詞可能" -> "_a_"
-                        pos[2] == "助数詞可能" -> "_b_"
-                        else -> morpheme.normalizedForm()
-                    }
-                    pos[1] == "固有名詞" -> morpheme.surface()
-                    pos[1] == "数詞" -> "_c_"
+            "名詞" -> when {
+                pos[1] == "普通名詞" -> when {
+                    pos[2] == "副詞可能" -> "_a_"
+                    pos[2] == "助数詞可能" -> "_b_"
                     else -> morpheme.normalizedForm()
                 }
+                pos[1] == "固有名詞" -> morpheme.surface()
+                pos[1] == "数詞" -> "_c_"
+                else -> morpheme.normalizedForm()
             }
-            in "動詞", "形容詞" -> morpheme.normalizedForm()
+            in "動詞", "形容詞", "代名詞", "形状詞" -> morpheme.normalizedForm()
             else -> return@SudachiTokenizerFactory null
         }.normalize()
     }
@@ -70,7 +68,7 @@ fun main(args: Array<String>) {
 
     val vec = Word2Vec.Builder()
             .iterations(1)
-            .epochs(20)
+            .epochs(25)
             .learningRate(0.025)
             .minLearningRate(1e-3)
             .batchSize(1000)

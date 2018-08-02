@@ -2,7 +2,7 @@ plugins {
     id 'application'
     id 'java'
     id 'java-library'
-    id 'org.jetbrains.kotlin.jvm' version '1.2.51'
+    id 'org.jetbrains.kotlin.jvm' version '1.2.60'
 }
 
 ext {
