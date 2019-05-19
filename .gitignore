@@ -1,3 +1,6 @@
 .gradle/
 .idea/
 out/
+jawiki-latest-pages-articles.txt
+system_full.dic
+build

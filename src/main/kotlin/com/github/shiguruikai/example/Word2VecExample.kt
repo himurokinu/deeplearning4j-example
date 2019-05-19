@@ -14,10 +14,10 @@ import kotlin.system.measureNanoTime
 private val topLevelClass = object : Any() {}.javaClass.enclosingClass
 private val log = LoggerFactory.getLogger(topLevelClass)
 
-private const val sourcePath = "~/text.txt"
-private const val dicDirPath = "~/sudachi/"
-private const val dicSettingsPath = "~/sudachi/sudachi_settings.json"
-private const val vecOutputPath = "/ramdisk/word2vec.zip"
+private const val sourcePath = "word2vec/jawiki-latest-pages-articles.txt"
+private const val dicDirPath = "sudachi/"
+private const val dicSettingsPath = "sudachi/sudachi_fulldict.json"
+private const val vecOutputPath = "word2vec/word2vec.zip"
 
 fun main(args: Array<String>) {
 
@@ -26,7 +26,8 @@ fun main(args: Array<String>) {
     }
 
     val dictionary = DictionaryFactory().create(
-            dicDirPath.toPath().toString(), dicSettingsPath.toPath().toFile().readText())
+            //dicDirPath.toPath().toString(),
+            dicSettingsPath.toPath().toFile().readText())
 
     fun String.normalize(): String? = when {
         isEmpty() -> null
@@ -34,7 +35,7 @@ fun main(args: Array<String>) {
         else -> this
     }
 
-    val tokenizer = SudachiTokenizerFactory(dictionary, SplitMode.B) { morpheme ->
+    val tokenizer = SudachiTokenizerFactory(dictionary, SplitMode.C) { morpheme ->
         // 未知語を無視する
         if (morpheme.isOOV) return@SudachiTokenizerFactory null
 

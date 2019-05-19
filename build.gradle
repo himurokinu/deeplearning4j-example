@@ -6,7 +6,7 @@ plugins {
 }
 
 ext {
-    sudachiVersion = '0.1.1-SNAPSHOT'
+    sudachiVersion = '0.2.0'
     logbackVersion = '1.2.3'
     dl4jVersion = '1.0.0-beta'
     nd4jVersion = '1.0.0-beta'
